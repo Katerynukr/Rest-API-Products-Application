@@ -9,6 +9,6 @@ namespace RestAPIApplication.Models
 {
     public class Fruits : Products 
     {
-        
+       
     }
 }

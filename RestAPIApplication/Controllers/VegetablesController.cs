@@ -13,9 +13,9 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class VegetablesController : ControllerBase
     {
-        private readonly VegetablesDataService _vegetablesDataService;
+        private readonly DataService _vegetablesDataService;
 
-        public VegetablesController(VegetablesDataService vegetablesDataService)
+        public VegetablesController(DataService vegetablesDataService)
         {
             _vegetablesDataService = vegetablesDataService;
         }
@@ -76,7 +76,5 @@ namespace RestAPIApplication.Controllers
             }
             _vegetablesDataService.Vegetables.Remove(product);
         }
-
-
     }
 }
