@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Список пользователей</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>Список пользователей</h2>
+    <form name="Form">
+        <input type="hidden" name="id" value="0" />
+        <div class="form-group col-md-5">
+            <label for="name">Id:</label>
+            <input class="form-control" name="is"  type="number"/>
+        </div>
+        <div class="form-group col-md-5">
+            <label for="age">Name:</label>
+            <input class="form-control" name="name" />
+        </div>
+        <div class="panel-body">
+            <button type="submit" id="submit" class="btn btn-primary">Save</button>
+            <a id="reset" class="btn btn-primary">Reset</a>
+        </div>
+    </form>
+    <table class="table table-condensed table-striped  col-md-6">
+        <thead><tr><th>#</th><th>Id</th><th>Name</th><th></th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script>
+        // Получение всех пользователей
+        async function GetAll() {
+            // отправляет запрос и получаем ответ
+            const response = await fetch("/vegetables", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            // если запрос прошел нормально
+            if (response.ok === true) {
+                // получаем данные
+                const products = await response.json();
+                let rows = document.querySelector("tbody");
+                products.forEach(product => {
+                    // добавляем полученные элементы в таблицу
+                    rows.append(row(product));
+                });
+            }
+        }
+        // Получение одного пользователя
+        async function GetById(id) {
+            const response = await fetch("/vegetables/" + id, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const product = await response.json();
+                const form = document.forms["Form"];
+                form.elements["id"].value = product.id;
+                form.elements["name"].value = product.name;
+            }
+        }
+        // Добавление пользователя
+        async function Create(productId, productsName) {
+
+            const response = await fetch("vegetables", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: parseInt(productId, 10),
+                    name: productsName
+                })
+            });
+            if (response.ok === true) {
+                const product = await response.json();
+                reset();
+                document.querySelector("tbody").append(row(product));
+            }
+        }
+        // Изменение пользователя
+        async function Modify(productId, productName) {
+            const response = await fetch("vegetables", {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id: parseInt(productId, 10),
+                    name: productsName
+                })
+            });
+            if (response.ok === true) {
+                const product = await response.json();
+                reset();
+                document.querySelector("tr[data-rowid='" + product.id + "']").replaceWith(row(product));
+            }
+        }
+        // Удаление пользователя
+        async function DeleteById(id) {
+            const response = await fetch("/vegetables/" + id, {
+                method: "DELETE",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const product = await response.json();
+                document.querySelector("tr[data-rowid='" + product.id + "']").remove();
+            }
+        }
+
+        // сброс формы
+        function reset() {
+            const form = document.forms["Form"];
+            form.reset();
+            form.elements["id"].value = 0;
+        }
+        // создание строки для таблицы
+        function row(product) {
+
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", product.id);
+
+            const idTd = document.createElement("td");
+            idTd.append(product.id);
+            tr.append(idTd);
+
+            const nameTd = document.createElement("td");
+            nameTd.append(product.name);
+            tr.append(nameTd);
+
+            const linksTd = document.createElement("td");
+
+            const editLink = document.createElement("a");
+            editLink.setAttribute("data-id", user.id);
+            editLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            editLink.append("Modify");
+            editLink.addEventListener("click", e => {
+
+                e.preventDefault();
+                GetById(product.id);
+            });
+            linksTd.append(editLink);
+
+            const removeLink = document.createElement("a");
+            removeLink.setAttribute("data-id", product.id);
+            removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            removeLink.append("Deleate");
+            removeLink.addEventListener("click", e => {
+
+                e.preventDefault();
+                Delete(product.id);
+            });
+
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+
+            return tr;
+        }
+        // сброс значений формы
+        document.getElementById("reset").click(function (e) {
+
+            e.preventDefault();
+            reset();
+        })
+
+        // отправка формы
+        document.forms["Form"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["Form"];
+            const id = form.elements["id"].value;
+            const name = form.elements["name"].value;
+            if (id == 0)
+                Create(id, name);
+            else
+                Modify(id, name);
+        });
+
+        // загрузка пользователей
+        GetAll();
+
+    </script>
+</body>
+</html>
