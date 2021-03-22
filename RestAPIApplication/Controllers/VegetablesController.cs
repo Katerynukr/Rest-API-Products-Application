@@ -13,23 +13,23 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class VegetablesController : ControllerBase
     {
-        private readonly DataService _vegetablesDataService;
+        private readonly DataContext _context;
 
-        public VegetablesController(DataService vegetablesDataService)
+        public VegetablesController(DataContext context)
         {
-            _vegetablesDataService = vegetablesDataService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
         public List<Vegetables> GetAll()
         {
-            return _vegetablesDataService.Vegetables;
+            return _context.Vegetables.ToList();
         }
 
         [HttpGet("{id}")]
         public Vegetables GetById(int id)
         {
-            var product = _vegetablesDataService.Vegetables.FirstOrDefault(p => p.Id == id);
+            var product = _context.Vegetables.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
@@ -40,41 +40,44 @@ namespace RestAPIApplication.Controllers
         [HttpPost]
         public void Create(Vegetables product)
         {
-            var productToCreate = _vegetablesDataService.Vegetables.FirstOrDefault(p => p.Id == product.Id);
-            if (productToCreate != null)
+            if (product == null)
             {
                 throw new Exception();
             }
-            _vegetablesDataService.Vegetables.Add(product);
+            _context.Add(product);
+            _context.SaveChanges();
         }
 
         [HttpPut]
         public void ModifyById(Vegetables product)
         {
-            var productToReplace = _vegetablesDataService.Vegetables.FirstOrDefault(p => p.Id == product.Id);
-            if (productToReplace == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            foreach (var vegetable in _vegetablesDataService.Vegetables)
-            {
-                if (vegetable.Id == product.Id) 
-                {
-                    vegetable.Id = product.Id;
-                    vegetable.Name = product.Name;
-                }
-            }
+            _context.Update(product);
+            _context.SaveChanges();
+            //var productToReplace = _context.Vegetables.FirstOrDefault(p => p.Id == product.Id);
+            //if (productToReplace == null)
+            //{
+            //    throw new KeyNotFoundException();
+            //}
+            //foreach (var vegetable in _context.Vegetables)
+            //{
+            //    if (vegetable.Id == product.Id)
+            //    {
+            //        vegetable.Id = product.Id;
+            //        vegetable.Name = product.Name;
+            //    }
+            //}
         }
 
         [HttpDelete("{id}")]
         public void DeleateById(int id)
         {
-            var product = _vegetablesDataService.Vegetables.FirstOrDefault(p => p.Id == id);
+            var product = _context.Vegetables.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
             }
-            _vegetablesDataService.Vegetables.Remove(product);
+            _context.Vegetables.Remove(product);
+            _context.SaveChanges();
         }
     }
 }

@@ -13,23 +13,23 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class DieryProductsController : ControllerBase
     {
-        private readonly DataService _dieryProductsDataService;
+        private readonly DataContext _context;
 
-        public DieryProductsController(DataService dierytProductsDataService)
+        public DieryProductsController(DataContext context)
         {
-            _dieryProductsDataService = dierytProductsDataService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
         public List<DieryProducts> GetAll()
         {
-            return _dieryProductsDataService.DieryProducts;
+            return _context.DieryProducts.ToList();
         }
 
         [HttpGet("{id}")]
         public DieryProducts GetById(int id)
         {
-            var product = _dieryProductsDataService.DieryProducts.FirstOrDefault(p => p.Id == id);
+            var product = _context.DieryProducts.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
@@ -40,41 +40,31 @@ namespace RestAPIApplication.Controllers
         [HttpDelete("{id}")]
         public void RemoveById(int id)
         {
-            var productToRemove = _dieryProductsDataService.DieryProducts.FirstOrDefault(p => p.Id == id);
+            var productToRemove = _context.DieryProducts.FirstOrDefault(p => p.Id == id);
             if (productToRemove == null)
             {
                 throw new KeyNotFoundException();
             }
-            _dieryProductsDataService.DieryProducts.Remove(productToRemove);
+            _context.Remove(productToRemove);
+            _context.SaveChanges();
         }
 
         [HttpPost]
         public void Create(DieryProducts product)
         {
-            var productToCreate = _dieryProductsDataService.DieryProducts.FirstOrDefault(p => p.Id == product.Id);
-            if (productToCreate != null)
+            if (product == null)
             {
                 throw new Exception();
             }
-            _dieryProductsDataService.DieryProducts.Add(product);
+            _context.Add(product);
+            _context.SaveChanges();
         }
 
         [HttpPut]
         public void Modify(DieryProducts product)
         {
-            var productToReplace = _dieryProductsDataService.DieryProducts.FirstOrDefault(p => p.Id == product.Id);
-            if (productToReplace == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            foreach (var dieryProduct in _dieryProductsDataService.DieryProducts)
-            {
-                if (dieryProduct.Id == product.Id)
-                {
-                    dieryProduct.Id = product.Id;
-                    dieryProduct.Name = product.Name;
-                }
-            }
+            _context.DieryProducts.Update(product);
+            _context.SaveChanges();
         }
     }
 }

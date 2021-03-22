@@ -13,23 +13,23 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class FruitsController : ControllerBase
     {
-        private readonly DataService _fruitsDataService;
+        private readonly DataContext _context;
 
-        public FruitsController(DataService vegetablesDataService)
+        public FruitsController(DataContext context)
         {
-            _fruitsDataService = vegetablesDataService;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         [HttpGet]
         public List<Fruits> GetAll()
         {
-            return _fruitsDataService.Fruits;
+            return _context.Fruits.ToList();
         }
 
         [HttpGet("{id}")]
         public Fruits GetById(int id)
         {
-            var product = _fruitsDataService.Fruits.FirstOrDefault(p => p.Id == id);
+            var product = _context.Fruits.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
@@ -40,41 +40,31 @@ namespace RestAPIApplication.Controllers
         [HttpPost]
         public void Create(Fruits product)
         {
-            var productToCreate = _fruitsDataService.Vegetables.FirstOrDefault(p => p.Id == product.Id);
-            if (productToCreate != null)
+            if (product == null)
             {
                 throw new Exception();
             }
-            _fruitsDataService.Fruits.Add(product);
+            _context.Add(product);
+            _context.SaveChanges();
         }
 
         [HttpPut]
         public void ModifyById(Models.Fruits product)
         {
-            var productToReplace = _fruitsDataService.Fruits.FirstOrDefault(p => p.Id == product.Id);
-            if (productToReplace == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            foreach (var fruit in _fruitsDataService.Fruits)
-            {
-                if (fruit.Id == product.Id)
-                {
-                    fruit.Id = product.Id;
-                    fruit.Name = product.Name;
-                }
-            }
+            _context.Update(product);
+            _context.SaveChanges();
         }
 
         [HttpDelete("{id}")]
         public void DeleateById(int id)
         {
-            var product = _fruitsDataService.Fruits.FirstOrDefault(p => p.Id == id);
+            var product = _context.Fruits.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
             }
-            _fruitsDataService.Fruits.Remove(product);
+            _context.Remove(product);
+            _context.SaveChanges();
         }
 
     }
