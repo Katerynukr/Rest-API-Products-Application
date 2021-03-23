@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Data;
+using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -14,44 +16,49 @@ namespace RestAPIApplication.Controllers
     public class MeatProductsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public MeatProductsController(DataContext context)
+        public MeatProductsController(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public List<MeatProducts> GetAll()
+        public List<ViewProductDto> GetAll()
         {
-            return _context.MeatProducts.ToList();
+            var entities = _context.MeatProducts.ToList();
+            return _mapper.Map<List<ViewProductDto>>(entities);
         }
 
         [HttpGet("{id}")]
-        public MeatProducts GetById(int id)
+        public ViewProductDto GetById(int id)
         {
             var product =_context.MeatProducts.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
             }
-            return product;
+            return  _mapper.Map<ViewProductDto>(product);
         }
 
         [HttpPost]
-        public void Create(MeatProducts product)
+        public void Create(ProductDto product)
         {
             if (product == null)
             {
                 throw new Exception();
             }
-            _context.Add(product);
+            var entity = _mapper.Map<MeatProducts>(product);
+            _context.Add(entity);
             _context.SaveChanges();
         }
 
         [HttpPut]
-        public void ModifyById(MeatProducts product)
+        public void ModifyById(ModifyProductDto product)
         {
-            _context.MeatProducts.Update(product);
+            var entity = _mapper.Map<MeatProducts>(product);
+            _context.MeatProducts.Update(entity);
             _context.SaveChanges();
         }
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Data;
+using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -14,44 +16,53 @@ namespace RestAPIApplication.Controllers
     public class FruitsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public FruitsController(DataContext context)
+        public FruitsController(DataContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public List<Fruits> GetAll()
+        public List<ViewProductDto> GetAll()
         {
-            return _context.Fruits.ToList();
+            var entites =  _context.Fruits.ToList();
+            return _mapper.Map<List<ViewProductDto>>(entites);
         }
 
         [HttpGet("{id}")]
-        public Fruits GetById(int id)
+        public ViewProductDto GetById(int id)
         {
-            var product = _context.Fruits.FirstOrDefault(p => p.Id == id);
-            if (product == null)
+            var entity = _context.Fruits.FirstOrDefault(p => p.Id == id);
+            if (entity == null)
             {
                 throw new KeyNotFoundException();
             }
-            return product;
+            return _mapper.Map<ViewProductDto>(entity);
         }
 
         [HttpPost]
-        public void Create(Fruits product)
+        public void Create(ProductDto product)
         {
             if (product == null)
             {
                 throw new Exception();
             }
-            _context.Add(product);
+            var entity = _mapper.Map<Fruits>(product);
+            _context.Add(entity);
             _context.SaveChanges();
         }
 
         [HttpPut]
-        public void ModifyById(Models.Fruits product)
+        public void ModifyById(ModifyProductDto product)
         {
-            _context.Update(product);
+            if (product == null)
+            {
+                throw new Exception();
+            }
+            var entity = _mapper.Map<Fruits>(product);
+            _context.Update(entity);
             _context.SaveChanges();
         }
 

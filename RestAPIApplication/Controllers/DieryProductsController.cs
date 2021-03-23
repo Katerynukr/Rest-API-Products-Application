@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Data;
+using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -14,27 +16,31 @@ namespace RestAPIApplication.Controllers
     public class DieryProductsController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public DieryProductsController(DataContext context)
+        public DieryProductsController(DataContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public List<DieryProducts> GetAll()
+        public List<ViewProductDto> GetAll()
         {
-            return _context.DieryProducts.ToList();
+           var entities = _context.DieryProducts.ToList();
+            return _mapper.Map<List<ViewProductDto>>(entities);
         }
 
         [HttpGet("{id}")]
-        public DieryProducts GetById(int id)
+        public ViewProductDto GetById(int id)
         {
             var product = _context.DieryProducts.FirstOrDefault(p => p.Id == id);
             if (product == null)
             {
                 throw new KeyNotFoundException();
             }
-            return product;
+            var dto = _mapper.Map<ViewProductDto>(product);
+            return dto;
         }
 
         [HttpDelete("{id}")]
@@ -50,20 +56,26 @@ namespace RestAPIApplication.Controllers
         }
 
         [HttpPost]
-        public void Create(DieryProducts product)
+        public void Create(ProductDto product)
         {
             if (product == null)
             {
                 throw new Exception();
             }
-            _context.Add(product);
+            var entity = _mapper.Map<DieryProducts>(product);
+            _context.Add(entity);
             _context.SaveChanges();
         }
 
         [HttpPut]
-        public void Modify(DieryProducts product)
+        public void Modify(ModifyProductDto product)
         {
-            _context.DieryProducts.Update(product);
+            if (product == null)
+            {
+                throw new Exception();
+            }
+            var entity = _mapper.Map<DieryProducts>(product);
+            _context.DieryProducts.Update(entity);
             _context.SaveChanges();
         }
     }
