@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Data;
 using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
@@ -15,27 +16,19 @@ namespace RestAPIApplication.Controllers
     public class VegetablesController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public VegetablesController(DataContext context)
+        public VegetablesController(DataContext context, IMapper mapper)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public List<ViewProductDto> GetAll()
         {
             var entities = _context.Vegetables.ToList();
-            var dtos = new List<ViewProductDto>();
-            foreach (var entity in entities)
-            {
-                dtos.Add(new ViewProductDto()
-                {
-                    Id = entity.Id,
-                    Name = entity.Name,
-                    ShopId = entity.ShopId
-                });
-            }
-            return dtos;
+            return _mapper.Map<List<ViewProductDto>>(entities);
         }
 
         [HttpGet("{id}")]
@@ -45,15 +38,8 @@ namespace RestAPIApplication.Controllers
             if (entity == null)
             {
                 throw new KeyNotFoundException();
-            }
-            var dto = new ViewProductDto()
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                ShopId = entity.ShopId
-            };
-            
-            return dto;
+            }            
+            return _mapper.Map<ViewProductDto>(entity);
         }
 
         [HttpPost]
@@ -63,11 +49,7 @@ namespace RestAPIApplication.Controllers
             {
                 throw new Exception();
             }
-            var entity = new Vegetables()
-            {
-                Name = product.Name,
-                ShopId = product.ShopId
-            };
+            var entity = _mapper.Map<Vegetables>(product);
             _context.Vegetables.Add(entity);
             _context.SaveChanges();
         }
@@ -79,12 +61,7 @@ namespace RestAPIApplication.Controllers
             {
                 throw new Exception();
             }
-            var entity = new Vegetables()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                ShopId = product.ShopId
-            };
+            var entity = _mapper.Map<Vegetables>(product);
             _context.Update(entity);
             _context.SaveChanges();
         }
