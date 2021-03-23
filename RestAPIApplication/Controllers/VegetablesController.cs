@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Data;
+using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -21,51 +22,71 @@ namespace RestAPIApplication.Controllers
         }
 
         [HttpGet]
-        public List<Vegetables> GetAll()
+        public List<ViewProductDto> GetAll()
         {
-            return _context.Vegetables.ToList();
+            var entities = _context.Vegetables.ToList();
+            var dtos = new List<ViewProductDto>();
+            foreach (var entity in entities)
+            {
+                dtos.Add(new ViewProductDto()
+                {
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    ShopId = entity.ShopId
+                });
+            }
+            return dtos;
         }
 
         [HttpGet("{id}")]
-        public Vegetables GetById(int id)
+        public ViewProductDto GetById(int id)
         {
-            var product = _context.Vegetables.FirstOrDefault(p => p.Id == id);
-            if (product == null)
+            var entity = _context.Vegetables.FirstOrDefault(p => p.Id == id);
+            if (entity == null)
             {
                 throw new KeyNotFoundException();
             }
-            return product;
+            var dto = new ViewProductDto()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                ShopId = entity.ShopId
+            };
+            
+            return dto;
         }
 
         [HttpPost]
-        public void Create(Vegetables product)
+        public void Create(ProductDto product)
         {
             if (product == null)
             {
                 throw new Exception();
             }
-            _context.Add(product);
+            var entity = new Vegetables()
+            {
+                Name = product.Name,
+                ShopId = product.ShopId
+            };
+            _context.Vegetables.Add(entity);
             _context.SaveChanges();
         }
 
         [HttpPut]
-        public void ModifyById(Vegetables product)
+        public void ModifyById(ModifyProductDto product)
         {
-            _context.Update(product);
+            if (product == null)
+            {
+                throw new Exception();
+            }
+            var entity = new Vegetables()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                ShopId = product.ShopId
+            };
+            _context.Update(entity);
             _context.SaveChanges();
-            //var productToReplace = _context.Vegetables.FirstOrDefault(p => p.Id == product.Id);
-            //if (productToReplace == null)
-            //{
-            //    throw new KeyNotFoundException();
-            //}
-            //foreach (var vegetable in _context.Vegetables)
-            //{
-            //    if (vegetable.Id == product.Id)
-            //    {
-            //        vegetable.Id = product.Id;
-            //        vegetable.Name = product.Name;
-            //    }
-            //}
         }
 
         [HttpDelete("{id}")]
