@@ -8,7 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Data;
+using RestAPIApplication.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +35,8 @@ namespace RestAPIApplication
             //services.AddSingleton<DataService>();
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped(typeof(GenericRepository<>));
+            services.AddScoped(typeof(GenericControllerBase<,>));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPIApplication", Version = "v1" });

@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models.Base
 {
-    public class Products
+    public class Entity
     {
         public int Id { get; set; }
 
         [MaxLength(50)]
         public string Name { get; set; }
         public bool Delete { get; set; } = false;
-        public Shop Shop { get; set; }
-        public int? ShopId { get; set; }
     }
 }

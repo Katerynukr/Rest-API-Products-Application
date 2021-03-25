@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models
 {
-    public class DieryProducts : Products 
+    public class DieryProducts : Entity 
     {
+        public Shop Shop { get; set; }
+        public int? ShopId { get; set; }
     }
 }

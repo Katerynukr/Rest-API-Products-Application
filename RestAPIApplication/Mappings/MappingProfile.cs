@@ -14,18 +14,11 @@ namespace RestAPIApplication.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<ViewProductDto, Vegetables>().ReverseMap();
             CreateMap<ProductDto, Vegetables>().ReverseMap();
-            CreateMap<ModifyProductDto, Vegetables>().ReverseMap();
-            CreateMap<ViewProductDto, Fruits>().ReverseMap();
             CreateMap<ProductDto, Fruits>().ReverseMap();
-            CreateMap<ModifyProductDto, Fruits>().ReverseMap();
-            CreateMap<ViewProductDto, DieryProducts>().ReverseMap();
             CreateMap<ProductDto, DieryProducts>().ReverseMap();
-            CreateMap<ModifyProductDto, DieryProducts>().ReverseMap();
-            CreateMap<ViewProductDto, MeatProducts>().ReverseMap();
             CreateMap<ProductDto, MeatProducts>().ReverseMap();
-            CreateMap<ModifyProductDto, MeatProducts>().ReverseMap();
+            CreateMap<ShopDto, Shop>().ReverseMap();
         }
     }
 }

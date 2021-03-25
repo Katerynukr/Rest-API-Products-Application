@@ -10,8 +10,8 @@ using RestAPIApplication.Data;
 namespace RestAPIApplication.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210322161903_shop")]
-    partial class shop
+    [Migration("20210325114543_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -103,9 +103,9 @@ namespace RestAPIApplication.Migrations
                     b.Property<bool>("Delete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ShopName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

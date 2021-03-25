@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestAPIApplication.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,11 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models
 {
-    public class Shop
+    public class Shop : Entity
     {
-        public int Id { get; set; }
-        [MaxLength(64)]
-        public string ShopName { get; set; }
-        public bool Delete { get; set; } = false;
     }
 }

@@ -101,9 +101,9 @@ namespace RestAPIApplication.Migrations
                     b.Property<bool>("Delete")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ShopName")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
