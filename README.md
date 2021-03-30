@@ -11,12 +11,18 @@ Create ASP.NET CORE WEB API application that generates objects of products (ex. 
 - PUT
 # API for Diery Products should have additional POST method that allows to buy diery products nad store them into bought products database.
 
-## The goal of this project is to create APIs and learn testing APIs with Swagger and Postman. The project should use the principles of clean code with the use of repository, services and generics.
+## The goal of this project is to create APIs and learn testing APIs with Swagger and Postman. The project should use the principles of clean code with the use of repository, services and generics. In addition, the project is tested with xUnit test methods.
 
 
 ## Used libraries
 - AutoMapper
+- FluentAssertion
+- xunit
+- xunit.runner.visualstudio
+- Swashbuckle.AspNetCore
+- coverlet.collerctor
 - Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.InMemory
 - Microsoft.EntityFrameworkCore.SqlServer
 - Microsoft.EntityFrameworkCore.Tools
 
