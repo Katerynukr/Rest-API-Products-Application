@@ -10,5 +10,6 @@ namespace RestAPIApplication.Dtos
     public class ProductDto : DtoObject
     {
         public int ShopId { get; set; }
+        public decimal? Price { get; set; } = 5.00M;
     }
 }

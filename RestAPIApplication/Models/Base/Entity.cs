@@ -9,7 +9,7 @@ namespace RestAPIApplication.Models.Base
 {
     public class Entity
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [MaxLength(50)]
         public string Name { get; set; }

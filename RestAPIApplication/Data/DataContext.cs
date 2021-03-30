@@ -16,6 +16,7 @@ namespace RestAPIApplication.Data
         public DbSet<DieryProducts> DieryProducts { get; set; }
         public DbSet<Fruits> Fruits { get; set; }
         public DbSet<Shop> Shops { get; set; }
+        public DbSet<BoughtProduct> BoughtProducts{ get; set; }
         public DataContext(DbContextOptions options) : base(options)
         {
 

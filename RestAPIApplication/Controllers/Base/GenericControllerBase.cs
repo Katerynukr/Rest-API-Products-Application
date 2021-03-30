@@ -23,7 +23,7 @@ namespace RestAPIApplication.Controllers.Base
         }
 
         [HttpGet]
-        public async Task<List<TDto>> GetAll()
+        public async virtual Task<List<TDto>> GetAll()
         { 
             var entities = await _repository.GetAll();
             return _mapper.Map<List<TDto>>(entities);
@@ -52,5 +52,6 @@ namespace RestAPIApplication.Controllers.Base
         {
             await _repository.DeleateById(id);
         }
+
     }
 }

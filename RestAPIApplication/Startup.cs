@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Data;
 using RestAPIApplication.Repositories;
+using RestAPIApplication.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,8 @@ namespace RestAPIApplication
             //services.AddSingleton<DataService>();
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
+            services.AddSingleton<PriceCalculationService>();
+            services.AddSingleton<DiscountService>();
             services.AddScoped(typeof(GenericRepository<>));
             services.AddScoped(typeof(GenericControllerBase<,>));
             services.AddSwaggerGen(c =>

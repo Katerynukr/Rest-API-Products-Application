@@ -18,6 +18,8 @@ namespace RestAPIApplication.Mappings
             CreateMap<ProductDto, Fruits>().ReverseMap();
             CreateMap<ProductDto, DieryProducts>().ReverseMap();
             CreateMap<ProductDto, MeatProducts>().ReverseMap();
+            CreateMap<ProductDto, Product>().ReverseMap();
+            CreateMap<ProductDto, BoughtProduct>().ReverseMap();
             CreateMap<ShopDto, Shop>().ReverseMap();
         }
     }

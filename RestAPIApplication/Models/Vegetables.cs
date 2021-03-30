@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models
 {
-    public class Vegetables : Entity
+    public class Vegetables : Product
     {
-        public Shop Shop { get; set; }
-        public int? ShopId { get; set; }
     }
 }
      
