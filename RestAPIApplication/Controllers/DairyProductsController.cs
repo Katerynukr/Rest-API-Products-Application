@@ -16,20 +16,15 @@ namespace RestAPIApplication.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DieryProductsController : GenericControllerBase<ProductDto, DieryProducts>
+    public class DairyProductsController : GenericControllerBase<ProductDto, DairyProduct>
     {
-        private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly GenericRepository<DieryProducts> _repository;
-        private readonly PriceCalculationService _priceCalculationService;
+        private readonly GenericRepository<DairyProduct> _repository;
 
-        public DieryProductsController(IMapper mapper, GenericRepository<DieryProducts> repository, 
-            PriceCalculationService priceCalculationService, DataContext context) : base(mapper, repository)
+        public DairyProductsController(IMapper mapper, GenericRepository<DairyProduct> repository) : base(mapper, repository)
         {
            _mapper = mapper;
            _repository = repository;
-           _context = context;
-           _priceCalculationService = priceCalculationService;
         }
 
       [HttpGet]
@@ -40,10 +35,11 @@ namespace RestAPIApplication.Controllers
         }
 
         [HttpPost("{amount}/Buy")]
-        public async Task Buy(int amount, string Name)
+        public async Task Buy(int amount, string name)
         {
             var entities = await _repository.GetAll();
-            var filteredEntities = entities.FindAll(e => e.Name.Contains(Name));
+            await _repository.Buy(entities, amount , name);
+            /*var filteredEntities = entities.FindAll(e => e.Name.Contains(Name));
             int count = 0;
             if (amount <= 5 && amount > 0)
             {
@@ -56,7 +52,7 @@ namespace RestAPIApplication.Controllers
                         var boutghtEntity = _mapper.Map<BoughtProduct>(bought);
                         boutghtEntity.Id = null;
                         _context.BoughtProducts.Add(boutghtEntity);
-                        _context.DieryProducts.Remove(entity);
+                        _context.DairyProducts.Remove(entity);
                         count++;
                         await _context.SaveChangesAsync();
                     }
@@ -73,12 +69,12 @@ namespace RestAPIApplication.Controllers
                         var boutghtEntity = _mapper.Map<BoughtProduct>(bought);
                         boutghtEntity.Id = null;
                         _context.BoughtProducts.Add(boutghtEntity);
-                        _context.DieryProducts.Remove(entity);
+                        _context.DairyProducts.Remove(entity);
                         count++;
                         await _context.SaveChangesAsync();
                     }
                 }
-            }
+            }*/
         }
     }
 }

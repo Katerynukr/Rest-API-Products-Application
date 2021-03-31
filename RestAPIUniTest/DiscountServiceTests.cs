@@ -9,10 +9,10 @@ using Xunit;
 
 namespace RestAPIUniTest
 {
-    public class DiscountServiceTest
+    public class DiscountServiceTests
     {
         [Fact]
-        public void CulculateDiscount_GivenRegularPrice_CalculatesCorrectDiscount()
+        public void CalculateDiscount_GivenRegularPrice_CalculatesCorrectDiscount()
         {
             //Arrange
             var price = 5.0M;

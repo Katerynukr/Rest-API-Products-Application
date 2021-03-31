@@ -15,9 +15,9 @@ namespace RestAPIApplication.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MeatProductsController : GenericControllerBase<ProductDto, MeatProducts>
+    public class MeatProductsController : GenericControllerBase<ProductDto, MeatProduct>
     {
-        public MeatProductsController(IMapper mapper, GenericRepository<MeatProducts> repository) : base(mapper, repository)
+        public MeatProductsController(IMapper mapper, GenericRepository<MeatProduct> repository) : base(mapper, repository)
         {
         }
     }

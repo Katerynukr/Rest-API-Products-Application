@@ -1,4 +1,5 @@
-﻿using RestAPIApplication.Models.Base;
+﻿using RestAPIApplication.Models;
+using RestAPIApplication.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models
 {
-    public class DieryProducts : Product
+    public class Vegetable : Product
     {
     }
 }
+     

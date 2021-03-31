@@ -31,9 +31,9 @@ namespace RestAPIUniTest
             var discountService = new DiscountService();
             var priceCalculationService = new PriceCalculationService(discountService);
             var mockContext = new DataContext(GetInMemoryDbContextOptions());
-            var repository = new GenericRepository<DieryProducts>(mockContext, mapper);
+            var repository = new GenericRepository<DairyProduct>(mockContext, mapper);
             mockContext.Shops.Add(new Shop() { Id = 1 });
-            var productController = new DieryProductsController(mapper, repository, priceCalculationService, mockContext);
+            var productController = new DairyProductsController(mapper, repository, priceCalculationService, mockContext);
             var productDto = new ProductDto()
             {
                 Name = "Cheese",

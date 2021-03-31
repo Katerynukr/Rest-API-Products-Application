@@ -9,17 +9,17 @@ namespace RestAPIApplication.Data
 {
     public class DataService
     {
-        public List<Vegetables> Vegetables { get; set; }
-        public List<Fruits> Fruits { get; set; }
-        public List<MeatProducts> MeatProducts { get; set; }
-        public List<DieryProducts> DieryProducts{ get; set; }
+        public List<Vegetable> Vegetables { get; set; }
+        public List<Fruit> Fruits { get; set; }
+        public List<MeatProduct> MeatProducts { get; set; }
+        public List<DairyProduct> DairyProducts{ get; set; }
 
         public DataService()
         {
-            Vegetables = new List<Vegetables>();
-            Fruits = new List<Fruits>();
-            MeatProducts = new List<MeatProducts>();
-            DieryProducts = new List<DieryProducts>();
+            Vegetables = new List<Vegetable>();
+            Fruits = new List<Fruit>();
+            MeatProducts = new List<MeatProduct>();
+            DairyProducts = new List<DairyProduct>();
         }
     }
 }

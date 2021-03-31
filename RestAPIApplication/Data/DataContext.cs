@@ -11,10 +11,10 @@ namespace RestAPIApplication.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<Vegetables> Vegetables { get; set; }
-        public DbSet<MeatProducts> MeatProducts { get; set; }
-        public DbSet<DieryProducts> DieryProducts { get; set; }
-        public DbSet<Fruits> Fruits { get; set; }
+        public DbSet<Vegetable> Vegetables { get; set; }
+        public DbSet<MeatProduct> MeatProducts { get; set; }
+        public DbSet<DairyProduct> DairyProducts { get; set; }
+        public DbSet<Fruit> Fruits { get; set; }
         public DbSet<Shop> Shops { get; set; }
         public DbSet<BoughtProduct> BoughtProducts{ get; set; }
         public DataContext(DbContextOptions options) : base(options)
