@@ -18,8 +18,9 @@ namespace RestAPIApplication.Mappings
             CreateMap<ProductDto, Fruit>().ReverseMap();
             CreateMap<ProductDto, DairyProduct>().ReverseMap();
             CreateMap<ProductDto, MeatProduct>().ReverseMap();
-            CreateMap<ProductDto, Product>().ReverseMap();
-            CreateMap<ProductDto, BoughtProduct>().ReverseMap();
+            var map = CreateMap<BoughtProduct, ProductDto> ().ReverseMap();
+            map.ForMember(dest => dest.PreviousId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Entity, BoughtProduct>().ReverseMap();
             CreateMap<ShopDto, Shop>().ReverseMap();
         }
     }

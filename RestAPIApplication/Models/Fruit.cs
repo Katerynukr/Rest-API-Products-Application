@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Models
 {
-    public class Fruit : Product
+    public class Fruit : Entity
     {
     }
 }

@@ -19,8 +19,8 @@ namespace RestAPIUniTest
 {
     public class ProductControllerTests
     {
-        [Fact]
-        public async Task ProductCotrollerTest()
+       // [Fact]
+       /* public async Task ProductCotrollerTest()
         {
             //Arrange
             var mockMapper = new MapperConfiguration(cfg =>
@@ -56,6 +56,6 @@ namespace RestAPIUniTest
                 .Options;
 
             return options;
-        }
+        }*/
     }
 }

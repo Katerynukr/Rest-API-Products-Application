@@ -20,61 +20,28 @@ namespace RestAPIApplication.Controllers
     {
         private readonly IMapper _mapper;
         private readonly GenericRepository<DairyProduct> _repository;
+        private readonly BuyItemService<DairyProduct> _buyItemService;
 
-        public DairyProductsController(IMapper mapper, GenericRepository<DairyProduct> repository) : base(mapper, repository)
+        public DairyProductsController(IMapper mapper, GenericRepository<DairyProduct> repository, 
+            BuyItemService<DairyProduct> buyItemService) : base (mapper , repository)
         {
-           _mapper = mapper;
-           _repository = repository;
+            _mapper = mapper;
+            _repository = repository;
+            _buyItemService = buyItemService;
         }
 
-      [HttpGet]
+        [HttpGet]
         public async override Task<List<ProductDto>> GetAll()
         {
             var entities = await _repository.GetAll();
             return _mapper.Map<List<ProductDto>>(entities);
         }
 
-        [HttpPost("{amount}/Buy")]
-        public async Task Buy(int amount, string name)
+        //id {}
+        [HttpPost("{id}/Buy")]
+        public async Task Buy(int id, int amount)
         {
-            var entities = await _repository.GetAll();
-            await _repository.Buy(entities, amount , name);
-            /*var filteredEntities = entities.FindAll(e => e.Name.Contains(Name));
-            int count = 0;
-            if (amount <= 5 && amount > 0)
-            {
-                foreach (var entity in filteredEntities)
-                {
-                    if (count < amount)
-                    {
-                        var dto = _mapper.Map<ProductDto>(entity);
-                        var bought = _priceCalculationService.ApplyDiscount(dto);
-                        var boutghtEntity = _mapper.Map<BoughtProduct>(bought);
-                        boutghtEntity.Id = null;
-                        _context.BoughtProducts.Add(boutghtEntity);
-                        _context.DairyProducts.Remove(entity);
-                        count++;
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-            else if (amount > 5)
-            {
-                foreach (var entity in filteredEntities)
-                {
-                    if (count < amount)
-                    {
-                        var dto = _mapper.Map<ProductDto>(entity);
-                        var bought = _priceCalculationService.ApplyDiscountMax(dto);
-                        var boutghtEntity = _mapper.Map<BoughtProduct>(bought);
-                        boutghtEntity.Id = null;
-                        _context.BoughtProducts.Add(boutghtEntity);
-                        _context.DairyProducts.Remove(entity);
-                        count++;
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }*/
+             await _buyItemService.BuyItem(amount, id);
         }
     }
 }

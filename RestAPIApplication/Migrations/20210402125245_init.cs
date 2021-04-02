@@ -2,7 +2,7 @@
 
 namespace RestAPIApplication.Migrations
 {
-    public partial class update : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,15 +13,49 @@ namespace RestAPIApplication.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Delete = table.Column<bool>(type: "bit", nullable: false)
+                    Delete = table.Column<bool>(type: "bit", nullable: false),
+                    ShopId1 = table.Column<int>(type: "int", nullable: true),
+                    ShopId = table.Column<int>(type: "int", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shops", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shops_Shops_ShopId1",
+                        column: x => x.ShopId1,
+                        principalTable: "Shops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DieryProducts",
+                name: "BoughtProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PreviousId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Delete = table.Column<bool>(type: "bit", nullable: false),
+                    ShopId = table.Column<int>(type: "int", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BoughtProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BoughtProducts_Shops_ShopId",
+                        column: x => x.ShopId,
+                        principalTable: "Shops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DairyProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -29,13 +63,14 @@ namespace RestAPIApplication.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DieryProducts", x => x.Id);
+                    table.PrimaryKey("PK_DairyProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DieryProducts_Shops_ShopId",
+                        name: "FK_DairyProducts_Shops_ShopId",
                         column: x => x.ShopId,
                         principalTable: "Shops",
                         principalColumn: "Id",
@@ -51,7 +86,8 @@ namespace RestAPIApplication.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,7 +109,8 @@ namespace RestAPIApplication.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,7 +132,8 @@ namespace RestAPIApplication.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Delete = table.Column<bool>(type: "bit", nullable: false),
                     ShopId = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -109,8 +147,13 @@ namespace RestAPIApplication.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DieryProducts_ShopId",
-                table: "DieryProducts",
+                name: "IX_BoughtProducts_ShopId",
+                table: "BoughtProducts",
+                column: "ShopId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DairyProducts_ShopId",
+                table: "DairyProducts",
                 column: "ShopId");
 
             migrationBuilder.CreateIndex(
@@ -124,6 +167,11 @@ namespace RestAPIApplication.Migrations
                 column: "ShopId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shops_ShopId1",
+                table: "Shops",
+                column: "ShopId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Vegetables_ShopId",
                 table: "Vegetables",
                 column: "ShopId");
@@ -132,7 +180,10 @@ namespace RestAPIApplication.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DieryProducts");
+                name: "BoughtProducts");
+
+            migrationBuilder.DropTable(
+                name: "DairyProducts");
 
             migrationBuilder.DropTable(
                 name: "Fruits");

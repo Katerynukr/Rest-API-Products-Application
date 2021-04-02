@@ -18,13 +18,11 @@ namespace RestAPIApplication.Repositories
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly PriceCalculationService _priceCalculationService;
 
-        public GenericRepository(DataContext context, IMapper mapper, PriceCalculationService priceCalculationService)
+        public GenericRepository(DataContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _priceCalculationService = priceCalculationService;
         }
         public async Task<List<T>> GetAll()
         {
@@ -55,66 +53,50 @@ namespace RestAPIApplication.Repositories
 
         public async Task DeleateById(int id)
         {
-            var entity = _context.Set<T>().FirstOrDefault(e => e.Id == id);
+            var entity = this.FindById(id);
             if (entity != null)
             {
                 _context.Remove(entity);
             }
+            await this.ContextSaveChangesAsync();
+        }
+
+        public T FindById(int id)
+        {
+            var entity = _context.Set<T>().FirstOrDefault(e => e.Id == id);
+            if (entity == null)
+            {
+                throw new ArgumentException();
+            }
+            return entity;
+        }
+
+        public async Task ContextSaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
 
-        public async Task Buy(List<T> entities, int amount, string name)
+        public async Task RemoveProducts(T entity, int amount)
         {
-            var filteredEntities = entities.FindAll(e => e.Name.Contains(name));
-            int count = 0;
-            if (amount <= 5 && amount > 0)
+            if(entity.Quantity >= amount)
             {
-                foreach (var entity in filteredEntities)
+                entity.Quantity -= amount;
+                if(entity.Quantity == 0)
                 {
-                    if (count < amount)
-                    {
-                        var dto = _mapper.Map<ProductDto>(entity);
-                        var bought = _priceCalculationService.ApplyDiscount(dto);
-                        await this.AddToBoughtProducts(bought);
-                        await this.RemoveWhenBough(entity);
-                        count++;
-                    }
+                    _context.Set<T>().Remove(entity);
                 }
             }
-            else if (amount > 5)
+            else
             {
-                foreach (var entity in filteredEntities)
-                {
-                    if (count < amount)
-                    {
-                        var dto = _mapper.Map<ProductDto>(entity);
-                        var bought = _priceCalculationService.ApplyDiscountMax(dto);
-                        await this.AddToBoughtProducts(bought);
-                        await this.RemoveWhenBough(entity);
-                        count++;
-                    }
-                }
+                throw new InvalidOperationException("You can not buy this amount of products.");
             }
-        } 
-
-        private async Task AddToBoughtProducts(ProductDto dto)
-        {
-            if (dto != null)
-            {
-                var boutghtEntity = _mapper.Map<BoughtProduct>(dto);
-                boutghtEntity.Id = null;
-                _context.BoughtProducts.Add(boutghtEntity);
-            }
-            await _context.SaveChangesAsync();
+            await this.ContextSaveChangesAsync();
         }
 
-        private async Task RemoveWhenBough(T entity)
+        public async Task AddToSalesHistory(BoughtProduct entity)
         {
-            if (entity != null)
-            {
-                _context.Set<T>().Remove(entity);
-            }
-            await _context.SaveChangesAsync();
+            await _context.BoughtProducts.AddAsync(entity);
+            await this.ContextSaveChangesAsync();
         }
     }
 }

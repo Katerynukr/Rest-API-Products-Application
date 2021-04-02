@@ -38,6 +38,7 @@ namespace RestAPIApplication
             services.AddAutoMapper(typeof(Startup));
             services.AddSingleton<PriceCalculationService>();
             services.AddSingleton<DiscountService>();
+            services.AddScoped(typeof(BuyItemService<>));
             services.AddScoped(typeof(GenericRepository<>));
             services.AddScoped(typeof(GenericControllerBase<,>));
             services.AddSwaggerGen(c =>

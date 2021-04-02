@@ -1,4 +1,6 @@
-﻿using RestAPIApplication.Dtos;
+﻿using AutoMapper;
+using RestAPIApplication.Dtos;
+using RestAPIApplication.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,23 @@ namespace RestAPIApplication.Services
     public class PriceCalculationService
     {
         private readonly DiscountService _discountService;
+        private readonly IMapper _mapper;
 
-        public PriceCalculationService(DiscountService discountService)
+        public PriceCalculationService(DiscountService discountService, IMapper mapper)
         {
             _discountService = discountService;
+            _mapper = mapper;
         }
 
-        public ProductDto ApplyDiscount(ProductDto dto)
+        public ProductDto ApplyDiscount(Entity entity, int amount)
         {
-            if (dto.Price.HasValue)
+            var productDto = _mapper.Map<ProductDto>(entity);
+            if (productDto.Price.HasValue && productDto.Quantity >= amount)
             {
-                dto.Price = dto.Price - _discountService.CalculateDiscount(dto.Price.Value);
+                productDto.Quantity = amount;
+                productDto.Price = productDto.Price - _discountService.CalculateDiscount(productDto.Price.Value, amount);
             }
-
-            return dto;
-        }
-        public ProductDto ApplyDiscountMax(ProductDto dto)
-        {
-            if (dto.Price.HasValue)
-            {
-                dto.Price = dto.Price - _discountService.CalculateMaxDiscount(dto.Price.Value);
-            }
-            return dto;
+            return productDto;
         }
     }
 }

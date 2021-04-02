@@ -10,8 +10,8 @@ using RestAPIApplication.Data;
 namespace RestAPIApplication.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210330100119_id")]
-    partial class id
+    [Migration("20210402125245_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,8 +35,14 @@ namespace RestAPIApplication.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("PreviousId")
+                        .HasColumnType("int");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -48,7 +54,7 @@ namespace RestAPIApplication.Migrations
                     b.ToTable("BoughtProducts");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.DieryProducts", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.DairyProduct", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,6 +70,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -72,10 +81,10 @@ namespace RestAPIApplication.Migrations
 
                     b.HasIndex("ShopId");
 
-                    b.ToTable("DieryProducts");
+                    b.ToTable("DairyProducts");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.Fruits", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.Fruit", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,6 +100,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -102,7 +114,7 @@ namespace RestAPIApplication.Migrations
                     b.ToTable("Fruits");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.MeatProducts", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.MeatProduct", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,6 +130,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -143,12 +158,26 @@ namespace RestAPIApplication.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShopId1");
 
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.Vegetables", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.Vegetable", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -164,6 +193,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -184,7 +216,7 @@ namespace RestAPIApplication.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.DieryProducts", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.DairyProduct", b =>
                 {
                     b.HasOne("RestAPIApplication.Models.Shop", "Shop")
                         .WithMany()
@@ -193,7 +225,7 @@ namespace RestAPIApplication.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.Fruits", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.Fruit", b =>
                 {
                     b.HasOne("RestAPIApplication.Models.Shop", "Shop")
                         .WithMany()
@@ -202,7 +234,7 @@ namespace RestAPIApplication.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.MeatProducts", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.MeatProduct", b =>
                 {
                     b.HasOne("RestAPIApplication.Models.Shop", "Shop")
                         .WithMany()
@@ -211,7 +243,16 @@ namespace RestAPIApplication.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("RestAPIApplication.Models.Vegetables", b =>
+            modelBuilder.Entity("RestAPIApplication.Models.Shop", b =>
+                {
+                    b.HasOne("RestAPIApplication.Models.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId1");
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("RestAPIApplication.Models.Vegetable", b =>
                 {
                     b.HasOne("RestAPIApplication.Models.Shop", "Shop")
                         .WithMany()

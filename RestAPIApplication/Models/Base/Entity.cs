@@ -14,5 +14,9 @@ namespace RestAPIApplication.Models.Base
         [MaxLength(50)]
         public string Name { get; set; }
         public bool Delete { get; set; } = false;
+        public Shop Shop { get; set; }
+        public int? ShopId { get; set; }
+        public int? Quantity { get; set; }
+        public decimal? Price { get; set; } = 5.0M;
     }
 }

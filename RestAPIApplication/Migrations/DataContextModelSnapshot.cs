@@ -33,8 +33,14 @@ namespace RestAPIApplication.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("PreviousId")
+                        .HasColumnType("int");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -63,6 +69,9 @@ namespace RestAPIApplication.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
@@ -89,6 +98,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -117,6 +129,9 @@ namespace RestAPIApplication.Migrations
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
 
@@ -141,7 +156,21 @@ namespace RestAPIApplication.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ShopId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ShopId1");
 
                     b.ToTable("Shops");
                 });
@@ -162,6 +191,9 @@ namespace RestAPIApplication.Migrations
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ShopId")
                         .HasColumnType("int");
@@ -205,6 +237,15 @@ namespace RestAPIApplication.Migrations
                     b.HasOne("RestAPIApplication.Models.Shop", "Shop")
                         .WithMany()
                         .HasForeignKey("ShopId");
+
+                    b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("RestAPIApplication.Models.Shop", b =>
+                {
+                    b.HasOne("RestAPIApplication.Models.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId1");
 
                     b.Navigation("Shop");
                 });
