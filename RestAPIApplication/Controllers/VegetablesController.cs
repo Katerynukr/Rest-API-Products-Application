@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Data;
 using RestAPIApplication.Dtos;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models;
 using RestAPIApplication.Repositories;
 using RestAPIApplication.Services;
@@ -19,7 +20,7 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class VegetablesController : GenericControllerBase<ProductDto, Vegetable>
     {
-        public VegetablesController(IMapper mapper, GenericRepository<Vegetable> repository, BuyItemService<Vegetable> buyItemService) : base(mapper, repository, buyItemService)
+        public VegetablesController(IMapper mapper, IGenericRepository<Vegetable> repository, Interfaces.IBuyItemService<Vegetable> buyItemService) : base(mapper, repository, buyItemService)
         {
         }
     }

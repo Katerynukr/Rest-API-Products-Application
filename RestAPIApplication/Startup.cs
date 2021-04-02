@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Data;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Repositories;
 using RestAPIApplication.Services;
 using System;
@@ -36,11 +37,10 @@ namespace RestAPIApplication
             //services.AddSingleton<DataService>();
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
-            services.AddSingleton<PriceCalculationService>();
-            services.AddSingleton<DiscountService>();
-            services.AddScoped(typeof(BuyItemService<>));
-            services.AddScoped(typeof(GenericRepository<>));
-            services.AddScoped(typeof(GenericControllerBase<,>));
+            services.AddScoped<IPriceCalculationService, PriceCalculationService>();
+            services.AddScoped<IDiscountService, DiscountService>();
+            services.AddScoped(typeof(Interfaces.IBuyItemService<>), typeof(Services.BuyItemService<>));
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPIApplication", Version = "v1" });

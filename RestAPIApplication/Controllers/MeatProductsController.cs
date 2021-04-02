@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Data;
 using RestAPIApplication.Dtos;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models;
 using RestAPIApplication.Repositories;
 using RestAPIApplication.Services;
@@ -18,7 +19,7 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class MeatProductsController : GenericControllerBase<ProductDto, MeatProduct>
     {
-        public MeatProductsController(IMapper mapper, GenericRepository<MeatProduct> repository, BuyItemService<MeatProduct> buyItemService) : base(mapper, repository, buyItemService)
+        public MeatProductsController(IMapper mapper, IGenericRepository<MeatProduct> repository, Interfaces.IBuyItemService<MeatProduct> buyItemService) : base(mapper, repository, buyItemService)
         {
         }
     }

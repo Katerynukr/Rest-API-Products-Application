@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Dtos;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models.Base;
 using RestAPIApplication.Repositories;
 using RestAPIApplication.Services;
@@ -15,10 +16,10 @@ namespace RestAPIApplication.Controllers.Base
     public class GenericControllerBase<TDto, TEntity> : ControllerBase where TDto  : DtoObject where TEntity : Entity
     {
         private readonly IMapper _mapper;
-        private readonly GenericRepository<TEntity> _repository;
-        private readonly BuyItemService<TEntity> _buyItemService;
+        private readonly IGenericRepository<TEntity> _repository;
+        private readonly Interfaces.IBuyItemService<TEntity> _buyItemService;
 
-        public GenericControllerBase(IMapper mapper, GenericRepository<TEntity> repository, BuyItemService<TEntity> buyItemService)
+        public GenericControllerBase(IMapper mapper, IGenericRepository<TEntity> repository, Interfaces.IBuyItemService<TEntity> buyItemService)
         {
             _mapper = mapper;
             _repository = repository;

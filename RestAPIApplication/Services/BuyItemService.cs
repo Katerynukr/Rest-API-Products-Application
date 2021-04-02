@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models;
 using RestAPIApplication.Models.Base;
 using RestAPIApplication.Repositories;
@@ -10,14 +11,14 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Services
 {
-    public class BuyItemService<T> where T : Entity
+    public class BuyItemService<T> : IBuyItemService<T> where T : Entity
     {
         private readonly IMapper _mapper;
-        private readonly GenericRepository<T> _repository;
-        private readonly PriceCalculationService _priceCalculationService;
+        private readonly IGenericRepository<T> _repository;
+        private readonly IPriceCalculationService _priceCalculationService;
 
-        public BuyItemService(IMapper mapper, GenericRepository<T> repository, 
-            PriceCalculationService priceCalculationService)
+        public BuyItemService(IMapper mapper, IGenericRepository<T> repository, 
+            IPriceCalculationService priceCalculationService)
         {
             _mapper = mapper;
             _repository = repository;

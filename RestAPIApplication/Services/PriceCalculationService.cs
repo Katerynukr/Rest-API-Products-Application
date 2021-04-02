@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RestAPIApplication.Dtos;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models.Base;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Services
 {
-    public class PriceCalculationService
+    public class PriceCalculationService : IPriceCalculationService
     {
-        private readonly DiscountService _discountService;
+        private readonly IDiscountService _discountService;
         private readonly IMapper _mapper;
 
-        public PriceCalculationService(DiscountService discountService, IMapper mapper)
+        public PriceCalculationService(IDiscountService discountService, IMapper mapper)
         {
             _discountService = discountService;
             _mapper = mapper;

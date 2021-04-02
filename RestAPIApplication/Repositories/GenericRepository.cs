@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestAPIApplication.Data;
 using RestAPIApplication.Dtos;
+using RestAPIApplication.Interfaces;
 using RestAPIApplication.Models;
 using RestAPIApplication.Models.Base;
 using RestAPIApplication.Services;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Repositories
 {
-    public class GenericRepository<T> where T : Entity
+    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
