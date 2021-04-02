@@ -5,6 +5,7 @@ using RestAPIApplication.Data;
 using RestAPIApplication.Dtos;
 using RestAPIApplication.Models;
 using RestAPIApplication.Repositories;
+using RestAPIApplication.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace RestAPIApplication.Controllers
     [Route("[controller]")]
     public class FruitsController : GenericControllerBase<ProductDto, Fruit>
     {
-        public FruitsController(IMapper mapper, Repositories.GenericRepository<Fruit> repository) : base(mapper, repository)
+        public FruitsController(IMapper mapper, Repositories.GenericRepository<Fruit> repository, BuyItemService<Fruit> buyItemService) : base(mapper, repository, buyItemService)
         {
         }
     }

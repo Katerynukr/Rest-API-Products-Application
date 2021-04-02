@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Dtos;
 using RestAPIApplication.Models.Base;
 using RestAPIApplication.Repositories;
+using RestAPIApplication.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,13 @@ namespace RestAPIApplication.Controllers.Base
     {
         private readonly IMapper _mapper;
         private readonly GenericRepository<TEntity> _repository;
+        private readonly BuyItemService<TEntity> _buyItemService;
 
-        public GenericControllerBase(IMapper mapper, GenericRepository<TEntity> repository)
+        public GenericControllerBase(IMapper mapper, GenericRepository<TEntity> repository, BuyItemService<TEntity> buyItemService)
         {
             _mapper = mapper;
             _repository = repository;
+            _buyItemService = buyItemService;
         }
 
         [HttpGet]
@@ -53,5 +56,10 @@ namespace RestAPIApplication.Controllers.Base
             await _repository.DeleateById(id);
         }
 
+        [HttpPost("{id}/Buy")]
+        public async Task Buy(int id, int amount)
+        {
+            await _buyItemService.BuyItem(amount, id);
+        }
     }
 }
