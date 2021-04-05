@@ -32,7 +32,7 @@ namespace RestAPIApplication.Services
             var entityForHistory = _mapper.Map<BoughtProduct>(dtoProductToBuyWithDiscount);
             entityForHistory.Id = null;
             await _repository.AddToSalesHistory(entityForHistory);
-           await _repository.RemoveProducts(entityToBuy, amount);
+            await _repository.RemoveProducts(entityToBuy, amount);
         }
     }
 }
