@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Dtos;
 using RestAPIApplication.Interfaces;
+using RestAPIApplication.Models;
 using RestAPIApplication.Models.Base;
 using RestAPIApplication.Repositories;
 using RestAPIApplication.Services;
@@ -57,10 +58,10 @@ namespace RestAPIApplication.Controllers.Base
             await _repository.DeleateById(id);
         }
 
-        [HttpPost("{id}/Buy")]
-        public async Task Buy(int id, int amount)
+        [HttpPost("Buy")]
+        public async Task Buy(BuyItem buyItem)
         {
-            await _buyItemService.BuyItem(amount, id);
+            await _buyItemService.BuyItem(buyItem.Quantity, buyItem.Id);
         }
     }
 }

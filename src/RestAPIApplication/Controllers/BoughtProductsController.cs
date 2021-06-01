@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestAPIApplication.Controllers.Base;
 using RestAPIApplication.Dtos;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace RestAPIApplication.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class BoughtProductsController : GenericControllerBase<ProductDto, BoughtProduct>

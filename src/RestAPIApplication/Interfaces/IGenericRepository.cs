@@ -17,5 +17,5 @@ namespace RestAPIApplication.Interfaces
         Task ContextSaveChangesAsync();
         Task RemoveProducts(T entity, int amount);
         Task AddToSalesHistory(BoughtProduct entity);
-        }
+    }
 }

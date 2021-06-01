@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/katerynaklime/databases/ShopProductsDB",
+      "type": "mssql.azure",
+      "connectionId": "DefaultConnectionString",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
+}
